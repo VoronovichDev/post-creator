@@ -1,12 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-    const response = await axios.get(
-        'https://jsonplaceholder.typicode.com/posts?_limit=4'
-    )
-    return response.data
-})
+export const fetchPosts = createAsyncThunk(
+    'posts/fetchPosts',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(
+                'https://jsonplaceholder.typicode.com/pposts?_limit=4'
+            )
+            return response.data
+        } catch (error) {
+            if (error.response.status >= 400 && error.response.status < 500) {
+                return rejectWithValue('page not found, we will fix it soon')
+            }
+            if (error.response.status >= 500) {
+                return rejectWithValue(
+                    'technical work, we will restore everything soon'
+                )
+            }
+            return rejectWithValue(error.message)
+        }
+    }
+)
 
 const postSlice = createSlice({
     name: 'posts',
@@ -37,6 +52,10 @@ const postSlice = createSlice({
         [fetchPosts.fulfilled]: (state, action) => {
             state.status = 'resolved'
             state.posts = action.payload
+        },
+        [fetchPosts.rejected]: (state, action) => {
+            state.status = 'rejected'
+            state.error = action.payload
         },
     },
 })
