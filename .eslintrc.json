@@ -19,6 +19,13 @@
     },
     "plugins": ["react"],
     "rules": {
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "react/button-has-type": "off",
+        "react/prop-types": "off",
+        "react/jsx-props-no-spreading": "off",
+        "jsx-a11y/label-has-associated-control": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "no-param-reassign": 0
     }
 }
