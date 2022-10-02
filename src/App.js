@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-
-import { addPost } from './store/postSlice'
+import { fetchPosts, addPost } from './store/postSlice'
 import NewPostForm from './components/NewPostForm'
 import Posts from './components/Posts'
 import s from './App.module.scss'
@@ -12,12 +11,16 @@ function App() {
     const dispatch = useDispatch()
 
     const handleAction = () => {
-        if (title.trim().length) {
+        if (title.trim().length && body.trim().length) {
             dispatch(addPost({ title, body }))
             setTitle('')
             setBody('')
         }
     }
+
+    useEffect(() => {
+        dispatch(fetchPosts())
+    }, [dispatch])
 
     return (
         <div className={s.App}>
