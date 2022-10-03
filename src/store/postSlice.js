@@ -43,6 +43,71 @@ export const deletePost = createAsyncThunk(
     }
 )
 
+// write with fetch because of the "non-serializable value" while trying to imlement this logic with axios
+export const addPostAsync = createAsyncThunk(
+    'posts/addPostAsync',
+    // eslint-disable-next-line consistent-return
+    async (text, { rejectWithValue, dispatch }) => {
+        try {
+            // ! jsonplaceholder assigns the same key, so it is not possible to get rid of the error with the unique keys
+            const newPost = {
+                userId: 1,
+                title: text.title,
+                body: text.body,
+            }
+            const response = await fetch(
+                'https://jsonplaceholder.typicode.com/posts',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify(newPost),
+                }
+            )
+            const data = await response.json()
+            dispatch(addPost(data))
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+// This is an attempt to implement logic using axios
+
+// export const addPostAsync = createAsyncThunk(
+//     'posts/addPostAsync',
+//     // eslint-disable-next-line consistent-return
+//     async (text, { rejectWithValue, dispatch }) => {
+//         try {
+//             const newPost = {
+//                 userId: 1,
+//                 title: text.title,
+//                 body: text.body,
+//             }
+//             const response = await axios.post(
+//                 'https://jsonplaceholder.typicode.com/posts',
+//                 JSON.stringify(newPost),
+//                 {
+//                     headers: {
+//                         'Content-type': 'application/json; charset=UTF-8',
+//                     },
+//                 }
+//             )
+//             console.log(response.data)
+//             dispatch(addPost(response.data))
+//             return response
+//         } catch (error) {
+//             if (error.response.status >= 400) {
+//                 return rejectWithValue(
+//                     "sorry, can't add post. We are already fixing it"
+//                 )
+//             }
+//             return rejectWithValue(error.message)
+//         }
+//     }
+// )
+
 const setError = (state, action) => {
     state.status = 'rejected'
     state.error = action.payload
@@ -57,11 +122,7 @@ const postSlice = createSlice({
     },
     reducers: {
         addPost(state, action) {
-            state.posts.push({
-                id: new Date().toISOString(),
-                title: action.payload.title,
-                body: action.payload.body,
-            })
+            state.posts.push(action.payload)
         },
         removePost(state, action) {
             state.posts = state.posts.filter(
@@ -83,6 +144,6 @@ const postSlice = createSlice({
     },
 })
 
-export const { addPost, removePost } = postSlice.actions
+const { addPost, removePost } = postSlice.actions
 
 export default postSlice.reducer

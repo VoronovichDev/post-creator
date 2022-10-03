@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchPosts, addPost } from './store/postSlice'
+import { fetchPosts, addPostAsync } from './store/postSlice'
 import NewPostForm from './components/NewPostForm'
 import Posts from './components/Posts'
 import s from './App.module.scss'
@@ -13,7 +13,7 @@ function App() {
 
     const handleAction = () => {
         if (title.trim().length && body.trim().length) {
-            dispatch(addPost({ title, body }))
+            dispatch(addPostAsync({ title, body }))
             setTitle('')
             setBody('')
         }
