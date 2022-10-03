@@ -73,41 +73,6 @@ export const addPostAsync = createAsyncThunk(
     }
 )
 
-// This is an attempt to implement logic using axios
-
-// export const addPostAsync = createAsyncThunk(
-//     'posts/addPostAsync',
-//     // eslint-disable-next-line consistent-return
-//     async (text, { rejectWithValue, dispatch }) => {
-//         try {
-//             const newPost = {
-//                 userId: 1,
-//                 title: text.title,
-//                 body: text.body,
-//             }
-//             const response = await axios.post(
-//                 'https://jsonplaceholder.typicode.com/posts',
-//                 JSON.stringify(newPost),
-//                 {
-//                     headers: {
-//                         'Content-type': 'application/json; charset=UTF-8',
-//                     },
-//                 }
-//             )
-//             console.log(response.data)
-//             dispatch(addPost(response.data))
-//             return response
-//         } catch (error) {
-//             if (error.response.status >= 400) {
-//                 return rejectWithValue(
-//                     "sorry, can't add post. We are already fixing it"
-//                 )
-//             }
-//             return rejectWithValue(error.message)
-//         }
-//     }
-// )
-
 const setError = (state, action) => {
     state.status = 'rejected'
     state.error = action.payload
