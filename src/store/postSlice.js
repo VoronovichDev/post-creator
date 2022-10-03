@@ -43,6 +43,11 @@ export const deletePost = createAsyncThunk(
     }
 )
 
+const setError = (state, action) => {
+    state.status = 'rejected'
+    state.error = action.payload
+}
+
 const postSlice = createSlice({
     name: 'posts',
     initialState: {
@@ -73,10 +78,8 @@ const postSlice = createSlice({
             state.status = 'resolved'
             state.posts = action.payload
         },
-        [fetchPosts.rejected]: (state, action) => {
-            state.status = 'rejected'
-            state.error = action.payload
-        },
+        [fetchPosts.rejected]: setError,
+        [deletePost.rejected]: setError,
     },
 })
 
