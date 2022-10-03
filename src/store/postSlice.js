@@ -6,7 +6,7 @@ export const fetchPosts = createAsyncThunk(
     async (_, { rejectWithValue }) => {
         try {
             const response = await axios.get(
-                'https://jsonplaceholder.typicode.com/pposts?_limit=4'
+                'https://jsonplaceholder.typicode.com/posts?_limit=4'
             )
             return response.data
         } catch (error) {
@@ -16,6 +16,26 @@ export const fetchPosts = createAsyncThunk(
             if (error.response.status >= 500) {
                 return rejectWithValue(
                     'technical work, we will restore everything soon'
+                )
+            }
+            return rejectWithValue(error.message)
+        }
+    }
+)
+
+export const deletePost = createAsyncThunk(
+    'posts/deletePost',
+    async (id, { rejectWithValue, dispatch }) => {
+        try {
+            // eslint-disable-next-line no-unused-vars
+            const response = await axios.delete(
+                `https://jsonplaceholder.typicode.com/posts/${id}`
+            )
+            return dispatch(removePost({ id }))
+        } catch (error) {
+            if (error.response.status >= 400) {
+                return rejectWithValue(
+                    "sorry, can't delete post. We are already fixing it"
                 )
             }
             return rejectWithValue(error.message)
