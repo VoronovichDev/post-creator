@@ -1,5 +1,6 @@
 .post {
-   border: 1px black solid;
+   border: 1px rgba(128, 128, 128, 0.186) solid;
+   border-radius: 5px;
    font-size: 1.3rem;
    display: -webkit-box;
    display: -ms-flexbox;
@@ -19,13 +20,24 @@
    justify-content: space-between;
    gap: 1.2rem;
    padding: 10px;
-}
-.post svg {
-   cursor: pointer;
-   display: block;
-}
-
-.title {
-   font-size: 1.5rem;
-   font-weight: 700;
+   -webkit-transition: -webkit-transform 0.5s ease;
+   transition: -webkit-transform 0.5s ease;
+   -o-transition: transform 0.5s ease;
+   transition: transform 0.5s ease;
+   transition: transform 0.5s ease, -webkit-transform 0.5s ease;
+   -webkit-box-shadow: 0 20px 25px -5px rgba(18, 85, 255, 0.1), 0 8px 10px -6px rgba(18, 85, 255, 0.1);
+   box-shadow: 0 20px 25px -5px rgba(18, 85, 255, 0.1), 0 8px 10px -6px rgba(18, 85, 255, 0.1);
+   &:hover {
+      -webkit-transform: scale(1.05);
+      -ms-transform: scale(1.05);
+      transform: scale(1.05);
+   }
+   & svg {
+      cursor: pointer;
+      display: block;
+   }
+   & .title {
+      font-size: 1.5rem;
+      font-weight: 700;
+   }
 }
